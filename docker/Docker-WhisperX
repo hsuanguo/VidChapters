@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:experimental
+
+# Use NVIDIA CUDA as the base image
+ARG BASE_IMAGE=nvcr.io/nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+
+FROM ${BASE_IMAGE}
+
+# Install prerequisites
+RUN apt-get update && apt-get install -y wget git ffmpeg libsm6 libxext6 python3-pip
+
+RUN pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+
+RUN pip install git+https://github.com/m-bain/whisperx.git@78dcfaab51005aa703ee21375f81ed31bc248560
+
+RUN pip install git+https://github.com/openai/whisper.git@ba3f3cd54b0e5b8ce1ab3de13e32122d0d5f98ab
+
+RUN mkdir /workspace && cd /workspace && git clone https://github.com/hsuanguo/VidChapters.git \
+    && cd VidChapters \
+    && mkdir cache
+
+ENV TRANSFORMERS_CACHE=/workspace/VidChapters/cache
