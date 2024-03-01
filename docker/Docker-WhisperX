@@ -16,6 +16,12 @@ RUN pip install git+https://github.com/openai/whisper.git@ba3f3cd54b0e5b8ce1ab3d
 
 RUN mkdir /workspace && cd /workspace && git clone https://github.com/hsuanguo/VidChapters.git \
     && cd VidChapters \
-    && mkdir cache
+    && mkdir cache \
+    && python3 ./docker/whisperx_model_load.py
+
+COPY ./docker/cmd_whisperx.sh /workspace/VidChapters/cmd_whisperx.sh
+COPY ./demo_asr.py /workspace/VidChapters/demo_asr.py
 
 ENV TRANSFORMERS_CACHE=/workspace/VidChapters/cache
+
+CMD ["/workspace/VidChapters/cmd_whisperx.sh"]
