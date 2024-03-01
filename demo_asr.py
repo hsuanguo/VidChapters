@@ -36,9 +36,9 @@ file_name = os.path.basename(args.video_example)
 file_name_no_ext = os.path.splitext(file_name)[0]
 video_file_dir = '/output'
 
-pickle.dump(aligned_asr, open(os.path.join(video_file_dir,file_name_no_ext + ".pkl"), 'wb'))
+pickle.dump(aligned_asr, open(os.path.join(video_file_dir,file_name_no_ext + "_asr.pkl"), 'wb'))
 
-with open(os.path.join(video_file_dir,file_name_no_ext + ".json"), 'w') as f:
+with open(os.path.join(video_file_dir,file_name_no_ext + "_asr.json"), 'w') as f:
     json.dump(aligned_asr['segments'], f, indent=4)
 
-print(f"done, saved to {file_name_no_ext}.json and {file_name_no_ext}.pkl")
+print(f"done, saved to {file_name_no_ext}_asr.json and {file_name_no_ext}_asr.pkl")

@@ -212,8 +212,8 @@ if not os.path.exists(output_dir):
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-output_file_json = os.path.join(output_dir, input_file_no_ext + '.json')
-output_file_pkl = os.path.join(output_dir, input_file_no_ext + '.pkl')
+output_file_json = os.path.join(output_dir, input_file_no_ext + '_chapt.json')
+output_file_pkl = os.path.join(output_dir, input_file_no_ext + '_chapt.pkl')
 
 with open(output_file_json, 'w') as f:
     json.dump(res, f)
