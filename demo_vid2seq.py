@@ -8,6 +8,7 @@ import re
 import pickle
 import clip
 import ffmpeg
+import json
 from model import build_vid2seq_model, _get_tokenizer
 from args import get_args_parser, MODEL_DIR
 
@@ -41,7 +42,9 @@ def time_tokenize(x, duration, num_bins, num_text_tokens):
 # Args
 parser = argparse.ArgumentParser(parents=[get_args_parser()])
 args = parser.parse_args()
-args.model_name = os.path.join(os.environ["TRANSFORMERS_CACHE"], args.model_name)
+
+#args.model_name = os.path.join(os.environ["TRANSFORMERS_CACHE"], args.model_name)
+
 device = torch.device(args.device)
 
 # Fix seeds
@@ -63,6 +66,7 @@ model.load_state_dict(checkpoint["model"], strict=False)
 # Extract video frames from video
 print("loading visual backbone")
 preprocess = Preprocessing()
+
 backbone, _ = clip.load("ViT-L/14", download_root=MODEL_DIR, device=device)
 backbone.eval()
 backbone.to(device)
@@ -195,3 +199,29 @@ for j, idx in enumerate(indexes):  # iterate on predicted events
                 'timestamp': [start, end]})
     last_processed = idx
 print(res)
+
+# save res to json
+input_file_no_dir = os.path.basename(args.video_example)
+input_file_no_ext = os.path.splitext(input_file_no_dir)[0]
+
+output_dir='/output'
+
+if not os.path.exists(output_dir):
+    output_dir = './output'
+
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
+output_file_json = os.path.join(output_dir, input_file_no_ext + '.json')
+output_file_pkl = os.path.join(output_dir, input_file_no_ext + '.pkl')
+
+with open(output_file_json, 'w') as f:
+    json.dump(res, f)
+
+# save res to pickle
+pickle.dump(res, open(output_file_pkl, 'wb'))
+    
+
+
+
+
