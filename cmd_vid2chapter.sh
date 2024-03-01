@@ -18,5 +18,5 @@ echo "input_model: ${input_model}"
 input_asr=$(ls /input_asr)
 echo "input_asr: ${input_asr}"
 
-python3 demo_vid2seq.py --load="${input_model}" --video_example="${input_video_file}" --asr_example "${input_asr}" --combine_datasets chapters
+python3 demo_vid2seq.py --load="/input_model/${input_model}" --video_example="/input/${input_video_file}" --asr_example "/input_asr/${input_asr}" --combine_datasets chapters
 
